@@ -21,6 +21,34 @@ jQuery(document).ready(function() {
 		});
 	}
 
+	// Listen to device orientation change
+	window.addEventListener('deviceorientation', function(event) {
+		var frontBack = event.beta;
+		shakeEvent(frontBack);
+	})
+
+	// Variables
+	var shakeAmount = 0;
+	var lastShake = 0;
+
+	// Fired on Shake event from event listener
+	var shakeEvent = function(shakeFB) {
+		var shakeDiff = (shakeFB - lastShake) / 1000;
+
+		if (shakeDiff > 0 && shakeDiff < 1) {
+			shakeAmount += shakeDiff;
+		}
+
+		lastShake = shakeFB;
+
+		$('.newImage').css({
+			'-webkit-filter': 'brightness(' + shakeAmount + ')'
+		});
+
+
+	}
+
+
 	getimage(url);
 
 });
